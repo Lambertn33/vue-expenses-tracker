@@ -3,15 +3,21 @@
   <div class="container">
     <Balance />
     <IncomeExpenses />
-    <TransactionsList />
+    <TransactionsList :transactions="transactions"/>
     <TransactionsForm />
   </div>
 </template>
-
-<script setup>
+    <script setup>
 import Header from "./components/Header.vue";
 import Balance from "./components/Balance.vue";
 import IncomeExpenses from "./components/IncomeExpenses.vue";
 import TransactionsForm from "./components/TransactionsForm.vue";
 import TransactionsList from "./components/TransactionsList.vue";
+
+const transactions = [
+  { id: 1, text: "Flower", amount: -20 },
+  { id: 2, text: "Salary", amount: 300 },
+  { id: 3, text: "Book", amount: -10 },
+  { id: 4, text: "Camera", amount: 150 },
+];
 </script>
