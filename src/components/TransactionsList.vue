@@ -13,7 +13,8 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, defineProps } from "vue";
+
 defineProps({
   transactions: Array,
 });
