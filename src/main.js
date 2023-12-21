@@ -1,5 +1,8 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import Toast from "vue-toastification";
 
-createApp(App).mount('#app')
+import "vue-toastification/dist/index.css";
+import "./style.css";
+
+createApp(App).use(Toast).mount("#app");

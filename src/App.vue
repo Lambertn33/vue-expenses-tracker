@@ -2,7 +2,7 @@
   <Header />
   <div class="container">
     <Balance :total="total" />
-    <IncomeExpenses />
+    <IncomeExpenses :totalIncome="totalIncomes" :totalExpense="totalExpenses" />
     <TransactionsList :transactions="transactions" />
     <TransactionsForm />
   </div>
@@ -23,9 +23,28 @@ const transactions = ref([
   { id: 4, text: "Camera", amount: 150 },
 ]);
 
+// Get total balance
 const total = computed(() => {
   return transactions.value.reduce((tot, transaction) => {
     return tot + transaction.amount;
   }, 0);
+});
+
+//Get total expenses
+const totalExpenses = computed(() => {
+  return transactions.value
+    .filter((transaction) => transaction.amount < 0)
+    .reduce((tot, transaction) => {
+      return tot + transaction.amount;
+    }, 0);
+});
+
+//Get total expenses
+const totalIncomes = computed(() => {
+  return transactions.value
+    .filter((transaction) => transaction.amount > 0)
+    .reduce((tot, transaction) => {
+      return tot + transaction.amount;
+    }, 0);
 });
 </script>
