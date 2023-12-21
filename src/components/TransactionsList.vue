@@ -16,7 +16,10 @@
 import { computed, defineProps } from "vue";
 
 defineProps({
-  transactions: Array,
+  transactions: {
+    type: Array,
+    required: true,
+  },
 });
 
 const renderTransactionClass = computed(
