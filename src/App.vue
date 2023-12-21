@@ -3,12 +3,15 @@
   <div class="container">
     <Balance :total="total" />
     <IncomeExpenses :totalIncome="totalIncomes" :totalExpense="totalExpenses" />
-    <TransactionsList :transactions="transactions" />
+    <TransactionsList
+      @onDeleteTransaction="deleteTransactionHandler"
+      :transactions="transactions"
+    />
     <TransactionsForm @onCreateTransaction="createTransactionHandler" />
   </div>
 </template>
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useToast } from "vue-toastification";
 
 import Header from "./components/Header.vue";
@@ -19,12 +22,7 @@ import TransactionsList from "./components/TransactionsList.vue";
 
 const toast = useToast();
 
-const transactions = ref([
-  { id: 1, text: "Flower", amount: -20 },
-  { id: 2, text: "Salary", amount: 300 },
-  { id: 3, text: "Book", amount: -10 },
-  { id: 4, text: "Camera", amount: 150 },
-]);
+const transactions = ref([]);
 
 //create transaction
 const createTransactionHandler = (newTransaction) => {
@@ -33,7 +31,17 @@ const createTransactionHandler = (newTransaction) => {
     id: Math.floor(Math.random() * 1000000),
   };
   transactions.value.push(transaction);
+  saveTransactionsToLocalStorage();
   toast.success("new transaction created successfully");
+};
+
+//delete transaction
+const deleteTransactionHandler = (id) => {
+  transactions.value = transactions.value.filter(
+    (transaction) => transaction.id !== id
+  );
+  saveTransactionsToLocalStorage();
+  toast.success("transaction deleted successfully");
 };
 
 // Get total balance
@@ -60,4 +68,16 @@ const totalIncomes = computed(() => {
       return tot + transaction.amount;
     }, 0);
 });
+
+// initially fetch data
+onMounted(() => {
+  const savedTransactions = JSON.parse(localStorage.getItem("transactions"));
+  if (savedTransactions) {
+    transactions.value = savedTransactions;
+  }
+});
+// save to localstorage
+const saveTransactionsToLocalStorage = () => {
+  localStorage.setItem("transactions", JSON.stringify(transactions.value));
+};
 </script>

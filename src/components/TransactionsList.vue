@@ -7,13 +7,13 @@
       :key="transaction.id"
     >
       {{ transaction.text }} <span>{{ transaction.amount }}</span
-      ><button class="delete-btn">x</button>
+      ><button @click="$emit('onDeleteTransaction', transaction.id)" class="delete-btn">x</button>
     </li>
   </ul>
 </template>
 
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed, defineProps, defineEmits } from "vue";
 
 defineProps({
   transactions: {
@@ -21,6 +21,8 @@ defineProps({
     required: true,
   },
 });
+
+defineEmits(['onDeleteTransaction']);
 
 const renderTransactionClass = computed(
   () => (amount) => amount > 0 ? "plus" : "minus"
